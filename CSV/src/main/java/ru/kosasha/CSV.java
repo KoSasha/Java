@@ -2,5 +2,5 @@ package ru.kosasha;
 
 interface CSV {
     String toCSV();
-    void FromCSV();
+    void fromCSV(String str);
 }
