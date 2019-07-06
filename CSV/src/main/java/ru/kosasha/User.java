@@ -4,17 +4,17 @@ public abstract class User implements CSV {
 
     private Integer id;
     private String fio;
-    private Integer phone;
+    private String phone;
     private String email;
 
     public User() {
         setId(0);
         setFio("");
-        setPhone(0);
+        setPhone("");
         setEmail("");
     }
 
-    public User(Integer id, String fio, Integer phone, String email) {
+    public User(Integer id, String fio, String phone, String email) {
         setId(id);
         setFio(fio);
         setPhone(phone);
@@ -29,7 +29,7 @@ public abstract class User implements CSV {
         this.fio = fio;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -45,7 +45,7 @@ public abstract class User implements CSV {
         return fio;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
