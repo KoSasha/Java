@@ -1,0 +1,8 @@
+apply plugin: 'java'
+apply plugin: 'aplication'
+
+mainClassName = 'kosasha.Collections'
+
+run {
+    standardInput = System.in
+}
