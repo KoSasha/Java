@@ -1,0 +1,8 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "kosasha.BigI"
+
+run {
+    standardInput=System.in
+}
