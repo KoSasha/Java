@@ -1,23 +1,34 @@
 package ru.kosasha;
 
-public class Task <T extends Comparable, V> {
+import java.util.ArrayList;
 
-    private T owner;
-    private V qa;
+class Task<O extends User, Q extends User> {
 
-    public void setOwner(T owner) {
+    private O owner;
+    private Q qa;
+    private String task;
+
+    public void setOwner(O owner) {
         this.owner = owner;
     }
 
-    public void setQa(V qa) {
+    public void setQa(Q qa) {
         this.qa = qa;
     }
 
-    public T getOwner() {
+    public void setTask(String task) {
+        this.task = task;
+    }
+
+    public O getOwner() {
         return owner;
     }
 
-    public V getQa() {
+    public Q getQa() {
         return qa;
+    }
+
+    public String getTask() {
+        return task;
     }
 }

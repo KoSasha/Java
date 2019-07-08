@@ -1,6 +1,7 @@
 package ru.kosasha;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -11,7 +12,7 @@ public class Main {
         frdevelopers.close();
         Developer developer = new Developer();
 
-        FileWriter fw1 = new FileWriter("src/main/resources/users.csv", true);
+        FileWriter fw1 = new FileWriter("src/main/resources/users.csv", false);
         fw1.write("USER;ID; FIO               ; PHONE       ; EMAIL             ; STRINGS (string1, string2,..., stringn);\n");
         fw1.close();
 
@@ -45,6 +46,51 @@ public class Main {
             fwman.write(manager.toCSV());
             fwman.write("\n");
             fwman.close();
+        }
+
+        FileReader frtasks = new FileReader("src/main/resources/tasks.csv");
+        Scanner intasks = new Scanner(frtasks);
+        String strtasks = intasks.nextLine(); // первая строка в файле
+        frtasks.close();
+        ArrayList<Task> tasks = new ArrayList<>();
+
+        FileWriter fw3 = new FileWriter("src/main/resources/users.csv", true);
+        fw3.write("OWNER; TASK ; QA\n");
+        fw3.close();
+        int i = 0;
+
+        while (intasks.hasNextLine()) {
+            strtasks = intasks.nextLine();
+            String[] array = strtasks.split(";");
+            if (array[0].compareTo("d    ") == 0) {
+                if (array[2].compareTo("d    ") == 0) {
+                    Task<Developer, Developer> task = new Task<>();
+                    tasks.add(task);
+                } else if (array[2].compareTo(" m") == 0) {
+                    Task<Developer, Manager> task = new Task<>();
+                    tasks.add(task);
+                } else {
+                    System.out.println("Левый юзер1.");
+                }
+            } else if (array[0].compareTo(" m") == 0) {
+                if (array[2].compareTo("d    ") == 0) {
+                    Task<Manager, Developer> task = new Task<>();
+                    tasks.add(task);
+                } else if (array[2].compareTo(" m") == 0) {
+                    Task<Manager, Manager> task = new Task<>();
+                    tasks.add(task);
+                } else {
+                    System.out.println("Левый юзер2");
+                }
+            } else {
+                System.out.println("Левый юзер3");
+            }
+
+            FileWriter fwtas = new FileWriter("src/main/resources/users.csv", true);
+            fwtas.write(strtasks);
+            fwtas.write("\n");
+            fwtas.close();
+            i++;
         }
     }
 }
