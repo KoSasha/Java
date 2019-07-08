@@ -10,7 +10,7 @@ public class Main {
         Scanner indevelopers = new Scanner(frdevelopers);
         String strdevelopers = indevelopers.nextLine(); // первая строка в файле
         frdevelopers.close();
-        Developer developer = new Developer();
+        ArrayList<Developer> devs = new ArrayList<>();
 
         FileWriter fw1 = new FileWriter("src/main/resources/users.csv", false);
         fw1.write("USER;ID; FIO               ; PHONE       ; EMAIL             ; STRINGS (string1, string2,..., stringn);\n");
@@ -18,7 +18,9 @@ public class Main {
 
         while (indevelopers.hasNextLine()) {
             strdevelopers = indevelopers.nextLine();
+            Developer developer = new Developer();
             developer.fromCSV(strdevelopers);
+            devs.add(developer);
 
             FileWriter fwdev = new FileWriter("src/main/resources/users.csv", true);
             fwdev.write("d\t;");
@@ -31,7 +33,8 @@ public class Main {
         Scanner inmanagers = new Scanner(frmanagers);
         String strmanagers = inmanagers.nextLine(); // первая строка в файле
         frmanagers.close();
-        Manager manager = new Manager();
+        ArrayList<Manager> mans = new ArrayList<>();
+        //Manager manager = new Manager();
 
         FileWriter fw2 = new FileWriter("src/main/resources/users.csv", true);
         fw2.write("USER;ID; FIO               ; PHONE       ; EMAIL             ; SALES (title1: price1, title2: price2,...)\n");
@@ -39,7 +42,9 @@ public class Main {
 
         while (inmanagers.hasNextLine()) {
             strmanagers = inmanagers.nextLine();
+            Manager manager = new Manager();
             manager.fromCSV(strmanagers);
+            mans.add(manager);
 
             FileWriter fwman = new FileWriter("src/main/resources/users.csv", true);
             fwman.write("m\t;");
