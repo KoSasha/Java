@@ -70,9 +70,11 @@ public class Main {
             if (array[0].compareTo("d    ") == 0) {
                 if (array[2].compareTo("d    ") == 0) {
                     Task<Developer, Developer> task = new Task<>();
+                    task.setTask(array[1]);
                     tasks.add(task);
                 } else if (array[2].compareTo(" m") == 0) {
                     Task<Developer, Manager> task = new Task<>();
+                    task.setTask(array[1]);
                     tasks.add(task);
                 } else {
                     System.out.println("Левый юзер1.");
@@ -80,9 +82,11 @@ public class Main {
             } else if (array[0].compareTo(" m") == 0) {
                 if (array[2].compareTo("d    ") == 0) {
                     Task<Manager, Developer> task = new Task<>();
+                    task.setTask(array[1]);
                     tasks.add(task);
                 } else if (array[2].compareTo(" m") == 0) {
                     Task<Manager, Manager> task = new Task<>();
+                    task.setTask(array[1]);
                     tasks.add(task);
                 } else {
                     System.out.println("Левый юзер2");
@@ -97,5 +101,12 @@ public class Main {
             fwtas.close();
             i++;
         }
+
+        i = devs.get(0).compareTo(mans.get(0));
+        System.out.println(i);
+        i = devs.get(1).compareTo(mans.get(0));
+        System.out.println(i);
+        i = devs.get(0).compareTo(mans.get(1));
+        System.out.println(i);
     }
 }
