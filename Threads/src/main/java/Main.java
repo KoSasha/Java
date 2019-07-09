@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) throws Exception {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             Runnable r = new MyThread(i);
             Thread t = new Thread(r);
             if (i == 0) {

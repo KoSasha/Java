@@ -1,4 +1,3 @@
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Printer {
@@ -31,5 +30,4 @@ public class Printer {
     }
 
     static public Integer a = 0;
-
 }
