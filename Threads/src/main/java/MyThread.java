@@ -3,7 +3,8 @@ public class MyThread implements Runnable {
     private Integer number;
 
     public void run() {
-        System.out.println(this.number);
+        System.out.println("Номер потока: " + this.number);
+
     }
 
     public MyThread(Integer i) {
