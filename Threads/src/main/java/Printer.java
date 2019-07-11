@@ -22,8 +22,9 @@ public class Printer {
 
     // Reentrantlock
 
+    static private ReentrantLock lock = new ReentrantLock();
+
     public void ink() {
-        ReentrantLock lock = new ReentrantLock();
         lock.lock();
         a += 1;
         lock.unlock();

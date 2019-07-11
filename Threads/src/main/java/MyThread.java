@@ -1,5 +1,3 @@
-import java.io.IOException;
-
 public class MyThread implements Runnable {
 
     private Integer number;
@@ -11,6 +9,10 @@ public class MyThread implements Runnable {
             System.out.println("Состояние 0-го потока во время работы run(): " + Thread.currentThread().getState());
         }
         p.ink();
+        try {
+            Phil ph = new Phil();
+            ph.eat();
+        } catch (InterruptedException e) {}
     }
 
     public MyThread(Integer i) {

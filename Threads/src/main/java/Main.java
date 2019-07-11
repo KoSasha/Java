@@ -8,7 +8,8 @@ public class Main {
             }
             t.start();
         }
-        Thread.sleep(100);
+        Thread.sleep(2000);
         System.out.println("\na = " + Printer.a);
+        System.out.println("\nc = " + Phil.c);
     }
 }
