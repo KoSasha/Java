@@ -5,77 +5,104 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        FileReader frdevelopers = new FileReader("src/main/resources/developers.csv");
-        Scanner indevelopers = new Scanner(frdevelopers);
-        String strdevelopers = indevelopers.nextLine(); // первая строка в файле
-        frdevelopers.close();
-        ArrayList<Developer> devs = new ArrayList<>();
+    public static ArrayList<Developer> devs = new ArrayList<>();
 
+    public static ArrayList<Manager> mans = new ArrayList<>();
+
+    public static ArrayList<Task> tsks = new ArrayList<>();
+
+    public static void main(String[] args) throws Exception {
+        // запись developers
         FileWriter fw1 = new FileWriter("src/main/resources/users.csv", false);
         fw1.write("USER;ID; FIO               ; PHONE       ; EMAIL             ; STRINGS (string1, string2,..., stringn);\n");
         fw1.close();
+        Main.Dev_ManList("src/main/resources/developers.csv", "src/main/resources/users.csv", "d");
 
-        while (indevelopers.hasNextLine()) {
-            strdevelopers = indevelopers.nextLine();
-            Developer developer = new Developer();
-            developer.fromCSV(strdevelopers);
-            devs.add(developer);
+        System.out.println(devs.get(0).getFio());
 
-            FileWriter fwdev = new FileWriter("src/main/resources/users.csv", true);
-            fwdev.write("d\t;");
-            fwdev.write(developer.toCSV());
-            fwdev.write("\n");
-            fwdev.close();
-        }
-
-        FileReader frmanagers = new FileReader("src/main/resources/managers.csv");
-        Scanner inmanagers = new Scanner(frmanagers);
-        String strmanagers = inmanagers.nextLine(); // первая строка в файле
-        frmanagers.close();
-        ArrayList<Manager> mans = new ArrayList<>();
-        //Manager manager = new Manager();
-
+        // запись managers
         FileWriter fw2 = new FileWriter("src/main/resources/users.csv", true);
         fw2.write("USER;ID; FIO               ; PHONE       ; EMAIL             ; SALES (title1: price1, title2: price2,...)\n");
         fw2.close();
+        Main.Dev_ManList("src/main/resources/managers.csv", "src/main/resources/users.csv", "m");
 
-        while (inmanagers.hasNextLine()) {
-            strmanagers = inmanagers.nextLine();
-            Manager manager = new Manager();
-            manager.fromCSV(strmanagers);
-            mans.add(manager);
+        System.out.println(mans.get(1).getFio());
 
-            FileWriter fwman = new FileWriter("src/main/resources/users.csv", true);
-            fwman.write("m\t;");
-            fwman.write(manager.toCSV());
-            fwman.write("\n");
-            fwman.close();
-        }
-
-        FileReader frtasks = new FileReader("src/main/resources/tasks.csv");
-        Scanner intasks = new Scanner(frtasks);
-        String strtasks = intasks.nextLine(); // первая строка в файле
-        frtasks.close();
-        ArrayList<Task> tasks = new ArrayList<>();
-
+        // запись tasks (пока только названия тасков)
         FileWriter fw3 = new FileWriter("src/main/resources/users.csv", true);
         fw3.write("OWNER; TASK ; QA\n");
         fw3.close();
+        TaskList("src/main/resources/tasks.csv", "src/main/resources/users.csv");
+
+        System.out.println(tsks.get(0).getTask());
+
+        int i;
+        i = devs.get(0).compareTo(mans.get(0));
+        System.out.println(i);
+        i = devs.get(1).compareTo(mans.get(0));
+        System.out.println(i);
+        i = devs.get(0).compareTo(mans.get(1));
+        System.out.println(i);
+
+
+        // JSON
+
+    }
+
+    public static void Dev_ManList(String address_from, String address_to, String who) throws Exception {
+        FileReader fr = new FileReader(address_from);
+        Scanner in = new Scanner(fr);
+        String str = in.nextLine(); // первая строка в файле
+        fr.close();
+
+        while (in.hasNextLine()) {
+            str = in.nextLine();
+            if (who == "d") {
+                Developer developer = new Developer();
+                developer.fromCSV(str);
+                devs.add(developer);
+
+                FileWriter fw = new FileWriter(address_to, true);
+                fw.write("d\t;");
+                fw.write(developer.toCSV());
+                fw.write("\n");
+                fw.close();
+            } else if (who == "m") {
+                Manager manager = new Manager();
+                manager.fromCSV(str);
+                mans.add(manager);
+
+                FileWriter fw = new FileWriter(address_to, true);
+                fw.write("m\t;");
+                fw.write(manager.toCSV());
+                fw.write("\n");
+                fw.close();
+            } else {
+                System.out.println("Указан мутный пользователь.");
+            }
+        }
+    }
+
+    public static void TaskList(String address_from, String address_to) throws Exception {
+        FileReader fr = new FileReader(address_from);
+        Scanner in = new Scanner(fr);
+        String str = in.nextLine(); // первая строка в файле
+        fr.close();
+
         int i = 0;
 
-        while (intasks.hasNextLine()) {
-            strtasks = intasks.nextLine();
-            String[] array = strtasks.split(";");
+        while (in.hasNextLine()) {
+            str = in.nextLine();
+            String[] array = str.split(";");
             if (array[0].compareTo("d    ") == 0) {
                 if (array[2].compareTo("d    ") == 0) {
                     Task<Developer, Developer> task = new Task<>();
                     task.setTask(array[1]);
-                    tasks.add(task);
+                    tsks.add(task);
                 } else if (array[2].compareTo(" m") == 0) {
                     Task<Developer, Manager> task = new Task<>();
                     task.setTask(array[1]);
-                    tasks.add(task);
+                    tsks.add(task);
                 } else {
                     System.out.println("Левый юзер1.");
                 }
@@ -83,30 +110,22 @@ public class Main {
                 if (array[2].compareTo("d    ") == 0) {
                     Task<Manager, Developer> task = new Task<>();
                     task.setTask(array[1]);
-                    tasks.add(task);
+                    tsks.add(task);
                 } else if (array[2].compareTo(" m") == 0) {
                     Task<Manager, Manager> task = new Task<>();
                     task.setTask(array[1]);
-                    tasks.add(task);
+                    tsks.add(task);
                 } else {
                     System.out.println("Левый юзер2");
                 }
             } else {
                 System.out.println("Левый юзер3");
             }
-
-            FileWriter fwtas = new FileWriter("src/main/resources/users.csv", true);
-            fwtas.write(strtasks);
-            fwtas.write("\n");
-            fwtas.close();
+            FileWriter fw = new FileWriter(address_to, true);
+            fw.write(str);
+            fw.write("\n");
+            fw.close();
             i++;
         }
-
-        i = devs.get(0).compareTo(mans.get(0));
-        System.out.println(i);
-        i = devs.get(1).compareTo(mans.get(0));
-        System.out.println(i);
-        i = devs.get(0).compareTo(mans.get(1));
-        System.out.println(i);
     }
 }

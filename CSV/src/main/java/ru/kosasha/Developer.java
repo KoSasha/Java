@@ -46,13 +46,13 @@ public class Developer extends User {
         setStrings(strings);
     }
 
-    @Override
-    public String toJSON() {
-
-    }
-
-    @Override
-    public void fromJSON() {
-
-    }
+//    @Override
+//    public String toJSON() {
+//
+//    }
+//
+//    @Override
+//    public void fromJSON() {
+//
+//    }
 }

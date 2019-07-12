@@ -60,13 +60,13 @@ public class Manager extends User {
         setSalesFromString(array[4]);
     }
 
-    @Override
-    public String toJSON() {
-
-    }
-
-    @Override
-    public void fromJSON() {
-
-    }
+//    @Override
+//    public String toJSON() {
+//
+//    }
+//
+//    @Override
+//    public void fromJSON(String str) {
+//
+//    }
 }
