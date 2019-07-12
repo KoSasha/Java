@@ -59,4 +59,14 @@ public class Manager extends User {
         setEmail(array[3]);
         setSalesFromString(array[4]);
     }
+
+    @Override
+    public String toJSON() {
+
+    }
+
+    @Override
+    public void fromJSON() {
+
+    }
 }

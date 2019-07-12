@@ -45,4 +45,14 @@ public class Developer extends User {
         String[] strings = array[4].split(",");
         setStrings(strings);
     }
+
+    @Override
+    public String toJSON() {
+
+    }
+
+    @Override
+    public void fromJSON() {
+
+    }
 }

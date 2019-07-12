@@ -1,6 +1,6 @@
 package ru.kosasha;
 
-public abstract class User implements CSV, Comparable <User> {
+public abstract class User implements JSON, CSV, Comparable <User> {
 
     private Integer id;
     private String fio;
@@ -56,6 +56,10 @@ public abstract class User implements CSV, Comparable <User> {
     public abstract String toCSV();
 
     public abstract void fromCSV(String str);
+
+    public abstract String toJSON();
+
+    public abstract void fromJSON();
 
     public int compareTo(User other) {
         return this.fio.compareTo(other.fio);
