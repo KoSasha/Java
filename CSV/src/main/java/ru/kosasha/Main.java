@@ -13,25 +13,19 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         // запись developers
-        FileWriter fw1 = new FileWriter("src/main/resources/users.csv", false);
-        fw1.write("USER;ID; FIO               ; PHONE       ; EMAIL             ; STRINGS (string1, string2,..., stringn);\n");
-        fw1.close();
+        Main.title("USER;ID; FIO               ; PHONE       ; EMAIL             ; STRINGS (string1, string2,..., stringn);\n", false);
         Main.Dev_ManList("src/main/resources/developers.csv", "src/main/resources/users.csv", "d");
 
         System.out.println(devs.get(0).getFio());
 
         // запись managers
-        FileWriter fw2 = new FileWriter("src/main/resources/users.csv", true);
-        fw2.write("USER;ID; FIO               ; PHONE       ; EMAIL             ; SALES (title1: price1, title2: price2,...)\n");
-        fw2.close();
+        Main.title("USER;ID; FIO               ; PHONE       ; EMAIL             ; SALES (title1: price1, title2: price2,...)\n", true);
         Main.Dev_ManList("src/main/resources/managers.csv", "src/main/resources/users.csv", "m");
 
         System.out.println(mans.get(1).getFio());
 
         // запись tasks (пока только названия тасков)
-        FileWriter fw3 = new FileWriter("src/main/resources/users.csv", true);
-        fw3.write("OWNER; TASK ; QA\n");
-        fw3.close();
+        Main.title("OWNER; TASK ; QA\n", true);
         TaskList("src/main/resources/tasks.csv", "src/main/resources/users.csv");
 
         System.out.println(tsks.get(0).getTask());
@@ -47,6 +41,14 @@ public class Main {
 
         // JSON
 
+
+
+    }
+
+    public static void title(String str, boolean t_f) throws Exception {
+        FileWriter fw1 = new FileWriter("src/main/resources/users.csv", t_f);
+        fw1.write(str);
+        fw1.close();
     }
 
     public static void Dev_ManList(String address_from, String address_to, String who) throws Exception {
