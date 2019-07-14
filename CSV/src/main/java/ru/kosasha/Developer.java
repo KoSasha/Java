@@ -1,5 +1,9 @@
 package ru.kosasha;
 
+import com.fasterxml.jackson.databind.*;
+
+import java.io.*;
+
 public class Developer extends User {
 
     private String[] strings;
@@ -46,13 +50,21 @@ public class Developer extends User {
         setStrings(strings);
     }
 
-//    @Override
-//    public String toJSON() {
-//
-//    }
-//
-//    @Override
-//    public void fromJSON() {
-//
-//    }
+    @Override
+    public String toJSON(String address_to) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(new File(address_to), this);
+        return mapper.writeValueAsString(this);
+    }
+
+    @Override
+    public void fromJSON(String address_from) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Developer dev = mapper.readValue(new File("resources/developers.json"), Developer.class);
+        this.setId(dev.getId());
+        this.setFio(dev.getFio());
+        this.setEmail(dev.getEmail());
+        this.setPhone(dev.getPhone());
+        this.setStrings(dev.getStrings());
+    }
 }

@@ -1,6 +1,10 @@
 package ru.kosasha;
 
-public abstract class User implements CSV, Comparable <User> {
+import com.fasterxml.jackson.databind.*;
+
+import java.io.IOException;
+
+public abstract class User implements CSV, JSON, Comparable <User> {
 
     private Integer id;
     private String fio;
@@ -57,9 +61,9 @@ public abstract class User implements CSV, Comparable <User> {
 
     public abstract void fromCSV(String str);
 
-//    public abstract String toJSON();
-//
-//    public abstract void fromJSON();
+    public abstract String toJSON(String address_to) throws IOException;
+
+    public abstract void fromJSON(String address_from) throws IOException;
 
     public int compareTo(User other) {
         return this.fio.compareTo(other.fio);
