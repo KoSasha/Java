@@ -13,19 +13,19 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         // запись developers
-        Main.title("USER;ID; FIO               ; PHONE       ; EMAIL             ; STRINGS (string1, string2,..., stringn);\n", false);
-        Main.Dev_ManList("src/main/resources/developers.csv", "src/main/resources/users.csv", "d");
+        Main.title("USER;ID; FIO               ; PHONE       ; EMAIL             ; STRINGS (string1, string2,..., stringn);\n", "src/main/resources/users.csv", false);
+        Main.Dev_ManList("src/main/resources/developers.csv", "src/main/resources/users.csv",  "d");
 
         System.out.println(devs.get(0).getFio());
 
         // запись managers
-        Main.title("USER;ID; FIO               ; PHONE       ; EMAIL             ; SALES (title1: price1, title2: price2,...)\n", true);
+        Main.title("USER;ID; FIO               ; PHONE       ; EMAIL             ; SALES (title1: price1, title2: price2,...)\n", "src/main/resources/users.csv", true);
         Main.Dev_ManList("src/main/resources/managers.csv", "src/main/resources/users.csv", "m");
 
         System.out.println(mans.get(1).getFio());
 
         // запись tasks (пока только названия тасков)
-        Main.title("OWNER; TASK ; QA\n", true);
+        Main.title("OWNER; TASK ; QA\n", "src/main/resources/users.csv", true);
         TaskList("src/main/resources/tasks.csv", "src/main/resources/users.csv");
 
         System.out.println(tsks.get(0).getTask());
@@ -41,12 +41,43 @@ public class Main {
 
         // JSON
 
-
-
+//        readJson("src/main/resources/developers.json", "d");
+//        readJson("src/main/resources/managers.json", "m");
+//
+//        writeJson("src/main/resources/dev.json", "d", 0);
+//        writeJson("src/main/resources/man.json", "m", 0);
     }
 
-    public static void title(String str, boolean t_f) throws Exception {
-        FileWriter fw1 = new FileWriter("src/main/resources/users.csv", t_f);
+    // JSON
+
+    public static void readJson(String address_from, String who) throws IOException {
+        if (who == "d") {
+            Developer developer = new Developer();
+            developer.fromJSON(address_from);
+            devs.add(developer);
+        } else if (who == "m") {
+            Manager manager = new Manager();
+            manager.fromJSON(address_from);
+            mans.add(manager);
+        } else {
+            System.out.println("Не але");
+        }
+    }
+
+    public static void writeJson(String address_to, String who, Integer index) throws Exception {
+        if (who == "d") {
+            devs.get(index).toJSON(address_to);
+        } else if (who == "m") {
+            mans.get(index).toJSON(address_to);
+        } else {
+            System.out.println("Не оно");
+        }
+    }
+
+    // CSV
+
+    public static void title(String str, String addres_to, boolean t_f) throws Exception {
+        FileWriter fw1 = new FileWriter(addres_to, t_f);
         fw1.write(str);
         fw1.close();
     }

@@ -1,5 +1,8 @@
 package ru.kosasha;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
+@JsonAutoDetect
 public class Sale {
 
     private String title;

@@ -60,7 +60,7 @@ public class Developer extends User {
     @Override
     public void fromJSON(String address_from) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        Developer dev = mapper.readValue(new File("resources/developers.json"), Developer.class);
+        Developer dev = mapper.readValue(new File(address_from), Developer.class);
         this.setId(dev.getId());
         this.setFio(dev.getFio());
         this.setEmail(dev.getEmail());

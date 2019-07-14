@@ -1,2 +1,1 @@
-{"1":{"id":1,"fio":"Surname1 Name1 O1","phone":"89131413478","email":"email1.@gmail.com","sales":[{"title1":"title11","price1":"price11"},{"title2":"title12","price2":"price12"}]},
-"2":{"id":1,"fio":"Surname1 Name1 O1","phone":"89131413478","email":"email1.@gmail.com","sales":[{"title1":"title11","price1":"price11"},{"title2":"title12","price2":"price12"}]}}
+{"id":1,"fio":"Surname1 Name1 O1","phone":"89131413478","email":"email1.@gmail.com","sales":[{"title":"title11","price":"price11"},{"title":"title12","price":"price12"}]}

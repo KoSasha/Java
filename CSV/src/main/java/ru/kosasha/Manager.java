@@ -1,11 +1,14 @@
 package ru.kosasha;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class Manager extends User {
 
+    @JsonDeserialize(as = Sale[].class)
     private Sale[] sales;
 
     public Manager() {
