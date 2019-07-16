@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+mainClassName = "mainDOM"
+
+run {
+    standardInput = System.in
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-class':'mainDOM'
+    }
+    baseName = 'all-in-one-jar'
+    from {
+        configurations.compile.collect { itisDerectory() ? it:zipTree(it)}
+    }
+    with jar
+}
