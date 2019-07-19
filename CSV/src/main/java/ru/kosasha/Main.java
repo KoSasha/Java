@@ -14,13 +14,15 @@ public class Main {
     public static void main(String[] args) throws Exception {
         // запись developers
         Main.title("USER;ID; FIO               ; PHONE       ; EMAIL             ; STRINGS (string1, string2,..., stringn);\n", "src/main/resources/users.csv", false);
-        Main.Dev_ManList("src/main/resources/developers.csv", "src/main/resources/users.csv",  "d");
+        readCSV("src/main/resources/developers.csv", "d");
+        writeCSV("src/main/resources/users.csv",  "d");
 
         System.out.println(devs.get(0).getFio());
 
         // запись managers
         Main.title("USER;ID; FIO               ; PHONE       ; EMAIL             ; SALES (title1: price1, title2: price2,...)\n", "src/main/resources/users.csv", true);
-        Main.Dev_ManList("src/main/resources/managers.csv", "src/main/resources/users.csv", "m");
+        readCSV("src/main/resources/managers.csv", "m");
+        writeCSV("src/main/resources/users.csv",  "m");
 
         System.out.println(mans.get(1).getFio());
 
@@ -82,7 +84,7 @@ public class Main {
         fw1.close();
     }
 
-    public static void Dev_ManList(String address_from, String address_to, String who) throws Exception {
+    public static void readCSV(String address_from, String who) throws IOException {
         FileReader fr = new FileReader(address_from);
         Scanner in = new Scanner(fr);
         String str = in.nextLine(); // первая строка в файле
@@ -94,26 +96,32 @@ public class Main {
                 Developer developer = new Developer();
                 developer.fromCSV(str);
                 devs.add(developer);
-
-                FileWriter fw = new FileWriter(address_to, true);
-                fw.write("d\t;");
-                fw.write(developer.toCSV());
-                fw.write("\n");
-                fw.close();
             } else if (who == "m") {
                 Manager manager = new Manager();
                 manager.fromCSV(str);
                 mans.add(manager);
-
-                FileWriter fw = new FileWriter(address_to, true);
-                fw.write("m\t;");
-                fw.write(manager.toCSV());
-                fw.write("\n");
-                fw.close();
             } else {
                 System.out.println("Указан мутный пользователь.");
             }
         }
+    }
+
+    public static void writeCSV(String address_to, String who) throws IOException {
+        FileWriter fw = new FileWriter(address_to, true);
+        if (who == "d") {
+            for (Developer developer : devs) {
+                fw.write("d\t;");
+                fw.write(developer.toCSV());
+                fw.write("\n");
+            }
+        } else if (who == "m") {
+            for (Manager manager : mans) {
+                fw.write("m\t;");
+                fw.write(manager.toCSV());
+                fw.write("\n");
+            }
+        }
+        fw.close();
     }
 
     public static void TaskList(String address_from, String address_to) throws Exception {
