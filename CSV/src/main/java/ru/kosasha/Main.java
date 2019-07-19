@@ -11,24 +11,35 @@ public class Main {
 
     public static ArrayList<Task> tsks = new ArrayList<>();
 
+    public static String usersFile = "src/main/resources/users.csv";
+
     public static void main(String[] args) throws Exception {
         // запись developers
-        Main.title("USER;ID; FIO               ; PHONE       ; EMAIL             ; STRINGS (string1, string2,..., stringn);\n", "src/main/resources/users.csv", false);
-        readCSV("src/main/resources/developers.csv", "d");
-        writeCSV("src/main/resources/users.csv",  "d");
+//        title("USER;ID; FIO               ; PHONE       ; EMAIL             ; STRINGS (string1, string2,..., stringn);\n", usersFile, false);
+//        readCSV("src/main/resources/developers.csv", "d");
+//        writeCSV(usersFile,  "d");
+
+        //запись в базу данных
+        //DUMP.devToDB(devs);
+
+        // из бады данных
+        DUMP.devFromDB(devs);
+        title("USER;ID; FIO               ; PHONE       ; EMAIL             ; STRINGS (string1, string2,..., stringn);\n", usersFile, false);
+//        readCSV("src/main/resources/developers.csv", "d");
+//        writeCSV(usersFile,  "d");
 
         System.out.println(devs.get(0).getFio());
 
         // запись managers
-        Main.title("USER;ID; FIO               ; PHONE       ; EMAIL             ; SALES (title1: price1, title2: price2,...)\n", "src/main/resources/users.csv", true);
+        title("USER;ID; FIO               ; PHONE       ; EMAIL             ; SALES (title1: price1, title2: price2,...)\n", usersFile, true);
         readCSV("src/main/resources/managers.csv", "m");
-        writeCSV("src/main/resources/users.csv",  "m");
+        writeCSV(usersFile,  "m");
 
         System.out.println(mans.get(1).getFio());
 
         // запись tasks (пока только названия тасков)
-        Main.title("OWNER; TASK ; QA\n", "src/main/resources/users.csv", true);
-        TaskList("src/main/resources/tasks.csv", "src/main/resources/users.csv");
+        title("OWNER; TASK ; QA\n", usersFile, true);
+        TaskList("src/main/resources/tasks.csv", usersFile);
 
         System.out.println(tsks.get(0).getTask());
 
