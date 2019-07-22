@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+mainClassName = "BroadcastingServer"
+
+repositories {
+    mavenCentral()
+}
+
+run {
+    standardInput = System.in
+}
