@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.*;
-import java.util.ArrayList;
 
 public class Manager extends User {
 
@@ -44,17 +43,17 @@ public class Manager extends User {
         String str = new String();
         for (Sale sale : sales) {
             str += sale.getTitle();
-            str += ": ";
+            str += ":";
             str += sale.getPrice();
-            str += ", ";
+            str += ",";
         }
         return str;
     }
 
     @Override
     public String toCSV() {
-        return this.getId().toString() + " ;" + this.getFio() + " ;" + this.getPhone() +
-                " ;" + this.getEmail() + " ;" + this.getStringSales(getSales());
+        return this.getId().toString() + ";" + this.getFio() + ";" + this.getPhone() +
+                ";" + this.getEmail() + ";" + this.getStringSales(getSales());
     }
 
     @Override

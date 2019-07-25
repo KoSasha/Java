@@ -1,12 +1,14 @@
 package ru.kosasha;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import lombok.*;
 
 @JsonAutoDetect
 public class Sale {
-
     private String title;
+
     private String price;
+
 
     public Sale() {
         setTitle("");

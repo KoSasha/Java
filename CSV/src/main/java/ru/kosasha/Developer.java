@@ -1,30 +1,36 @@
 package ru.kosasha;
 
 import com.fasterxml.jackson.databind.*;
+import lombok.*;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class Developer extends User {
 
-    private String[] strings;
+    //private String[] languages;
+
+    private ArrayList<String> languages = new ArrayList<>();
 
     public Developer() {
         super();
     }
 
-    public Developer(String[] strings) {
+    public Developer(ArrayList<String> strings) {
         setStrings(strings);
     }
 
-    public void setStrings(String[] strings) {
-        this.strings = strings;
+    public void setStrings(ArrayList<String> string) {
+        for (String str : string) {
+            this.languages.add(str);
+        }
     }
 
-    public String[] getStrings() {
-        return strings;
+    public ArrayList<String> getStrings() {
+        return languages;
     }
 
-    public String getStringsS(String[] strings) {
+    public String getStringsS(ArrayList<String> strings) {
         String str = new String();
         for (String string : strings) {
             str += string;
@@ -35,8 +41,8 @@ public class Developer extends User {
 
     @Override
     public String toCSV() {
-        return this.getId().toString() + " ;" + this.getFio() + " ;" + this.getPhone().toString() +
-                " ;" + this.getEmail() + " ;" + this.getStringsS(getStrings());
+        return this.getId().toString() + ";" + this.getFio() + ";" + this.getPhone().toString() +
+                ";" + this.getEmail() + ";" + this.getStringsS(getStrings());
     }
 
     @Override
@@ -47,7 +53,11 @@ public class Developer extends User {
         setPhone(array[2]);
         setEmail(array[3]);
         String[] strings = array[4].split(",");
-        setStrings(strings);
+        ArrayList<String> lang = new ArrayList<>();
+        for (String s : strings) {
+            lang.add(s);
+        }
+        setStrings(lang);
     }
 
     @Override

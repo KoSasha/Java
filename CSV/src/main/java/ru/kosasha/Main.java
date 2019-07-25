@@ -14,36 +14,45 @@ public class Main {
     public static String usersFile = "src/main/resources/users.csv";
 
     public static void main(String[] args) throws Exception {
+        DUMP.deleteTables();
+        DUMP.createTables();
         // запись developers
-//        title("USER;ID; FIO               ; PHONE       ; EMAIL             ; STRINGS (string1, string2,..., stringn);\n", usersFile, false);
-//        readCSV("src/main/resources/developers.csv", "d");
-//        writeCSV(usersFile,  "d");
+        title("USER;ID;FIO             ;PHONE      ;EMAIL            ;LANGUAGES (language1,language2,...,languagen);\n", usersFile, false);
+        readCSV("src/main/resources/developers.csv", "d");
+        writeCSV(usersFile,  "d");
 
-        //запись в базу данных
-        //DUMP.devToDB(devs);
+//        DUMP.devFromDB(devs); (пока не але)
+
+        //запись в базу данных devs
+        DUMP.devToDB(devs);
 
         // из бады данных
-        DUMP.devFromDB(devs);
-        title("USER;ID; FIO               ; PHONE       ; EMAIL             ; STRINGS (string1, string2,..., stringn);\n", usersFile, false);
-//        readCSV("src/main/resources/developers.csv", "d");
+        //DUMP.devFromDB(devs);
+//        title("USER;ID; FIO               ; PHONE       ; EMAIL             ; STRINGS (string1, string2,..., stringn);\n", usersFile, false);
+////        readCSV("src/main/resources/developers.csv", "d");
 //        writeCSV(usersFile,  "d");
-
-        System.out.println(devs.get(0).getFio());
-
+//
+//        System.out.println(devs.get(0).getFio());
+//
         // запись managers
-        title("USER;ID; FIO               ; PHONE       ; EMAIL             ; SALES (title1: price1, title2: price2,...)\n", usersFile, true);
+        title("USER;ID;FIO             ;PHONE      ;EMAIL            ;SALES (title1:price1,title2:price2,...)\n", usersFile, true);
         readCSV("src/main/resources/managers.csv", "m");
         writeCSV(usersFile,  "m");
 
-        System.out.println(mans.get(1).getFio());
+        //запись в базу данных mans
+        DUMP.manToDB(mans);
 
-        // запись tasks (пока только названия тасков)
-        title("OWNER; TASK ; QA\n", usersFile, true);
-        TaskList("src/main/resources/tasks.csv", usersFile);
-
-        System.out.println(tsks.get(0).getTask());
-
-        int i;
+        DUMP.union();
+//
+//        System.out.println(mans.get(1).getFio());
+//
+//        // запись tasks (пока только названия тасков)
+        title("OWNER;TASK ;QA\n", usersFile, true);
+        taskList("src/main/resources/tasks.csv", usersFile);
+//
+//        System.out.println(tsks.get(0).getTask());
+//
+        int i = 0;
         i = devs.get(0).compareTo(mans.get(0));
         System.out.println(i);
         i = devs.get(1).compareTo(mans.get(0));
@@ -135,7 +144,7 @@ public class Main {
         fw.close();
     }
 
-    public static void TaskList(String address_from, String address_to) throws Exception {
+    public static void taskList(String address_from, String address_to) throws Exception {
         FileReader fr = new FileReader(address_from);
         Scanner in = new Scanner(fr);
         String str = in.nextLine(); // первая строка в файле
@@ -151,19 +160,19 @@ public class Main {
                     Task<Developer, Developer> task = new Task<>();
                     task.setTask(array[1]);
                     tsks.add(task);
-                } else if (array[2].compareTo(" m") == 0) {
+                } else if (array[2].compareTo("m") == 0) {
                     Task<Developer, Manager> task = new Task<>();
                     task.setTask(array[1]);
                     tsks.add(task);
                 } else {
                     System.out.println("Левый юзер1.");
                 }
-            } else if (array[0].compareTo(" m") == 0) {
+            } else if (array[0].compareTo("m") == 0) {
                 if (array[2].compareTo("d    ") == 0) {
                     Task<Manager, Developer> task = new Task<>();
                     task.setTask(array[1]);
                     tsks.add(task);
-                } else if (array[2].compareTo(" m") == 0) {
+                } else if (array[2].compareTo("m") == 0) {
                     Task<Manager, Manager> task = new Task<>();
                     task.setTask(array[1]);
                     tsks.add(task);
