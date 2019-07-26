@@ -21,16 +21,18 @@ repositories {
     mavenCentral()
 }
 
-
-
 dependencies {
     compile 'com.fasterxml.jackson.core:jackson-core:2.6.3'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.3'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
-    compile 'org.projectlombok:lombok:1.16.6'
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.12'
 
     testCompile 'junit:junit:4.11'
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
 }
 
 mainClassName = 'ru.kosasha.Main'

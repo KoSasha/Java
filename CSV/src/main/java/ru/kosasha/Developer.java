@@ -6,19 +6,12 @@ import lombok.*;
 import java.io.*;
 import java.util.ArrayList;
 
+@NoArgsConstructor@AllArgsConstructor
 public class Developer extends User {
 
     //private String[] languages;
 
     private ArrayList<String> languages = new ArrayList<>();
-
-    public Developer() {
-        super();
-    }
-
-    public Developer(ArrayList<String> strings) {
-        setStrings(strings);
-    }
 
     public void setStrings(ArrayList<String> string) {
         for (String str : string) {

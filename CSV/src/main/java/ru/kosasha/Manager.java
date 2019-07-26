@@ -2,21 +2,15 @@ package ru.kosasha;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.*;
 
 import java.io.*;
 
+@NoArgsConstructor@AllArgsConstructor
 public class Manager extends User {
 
     @JsonDeserialize(as = Sale[].class)
     private Sale[] sales;
-
-    public Manager() {
-        super();
-    }
-
-    public Manager(Sale[] sales) {
-        setSales(sales);
-    }
 
     public void setSales(Sale[] sales) {
         this.sales = sales;
