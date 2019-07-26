@@ -1,8 +1,7 @@
 package ru.kosasha;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static ArrayList<Developer> devs = new ArrayList<>();
@@ -14,6 +13,8 @@ public class Main {
     public static String usersFile = "src/main/resources/users.csv";
 
     public static void main(String[] args) throws Exception {
+        DUMP.property();
+
         DUMP.deleteTables();
         DUMP.createTables();
         // запись developers

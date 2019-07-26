@@ -1,13 +1,30 @@
 package ru.kosasha;
 
+import java.io.*;
 import java.sql.*;
 import java.util.*;
 
 public class DUMP {
-    public static final String DB_URL = "jdbc:mysql://localhost:3306/users";
+    private static String DB_URL;
+
+    private static String login;
+
+    private static String password;
+
+    public static void property() {
+        FileInputStream fis;
+        Properties property = new Properties();
+        try {
+            fis = new FileInputStream("src/main/resources/config.properties");
+            property.load(fis);
+            DB_URL = property.getProperty("db.host");
+            login = property.getProperty("db.login");
+            password = property.getProperty("db.password");
+        } catch (IOException e) {}
+    }
 
     public static void createTables() throws SQLException {
-        Connection connection = DriverManager.getConnection(DB_URL, "root", "rnsnfhlkj");
+        Connection connection = DriverManager.getConnection(DB_URL, login, password);
         Statement statement = connection.createStatement();
 
         // создание нужных таблиц для developers, если таковых нет
@@ -41,7 +58,7 @@ public class DUMP {
     }
 
     public static void devToDB(ArrayList<Developer> dev) throws SQLException {
-        Connection connection = DriverManager.getConnection(DB_URL, "root", "rnsnfhlkj");
+        Connection connection = DriverManager.getConnection(DB_URL, login, password);
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT id FROM developers");
         resultSet.last();
@@ -75,7 +92,7 @@ public class DUMP {
     }
 
     public static void manToDB(ArrayList<Manager> mans) throws SQLException {
-        Connection connection = DriverManager.getConnection(DB_URL, "root", "rnsnfhlkj");
+        Connection connection = DriverManager.getConnection(DB_URL, login, password);
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT id FROM managers");
         resultSet.last();
@@ -101,12 +118,10 @@ public class DUMP {
 
 
     public static void devFromDB(ArrayList<Developer> dev) throws SQLException {
-        Connection connection = DriverManager.getConnection(DB_URL, "root", "rnsnfhlkj");
+        Connection connection = DriverManager.getConnection(DB_URL, login, password);
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT developers.*, languages.id_developer, languages.id_language FROM developers " +
                 "INNER JOIN languages ON developers.id = languages.id_developer;");
-//        ResultSet language = statement.executeQuery("SELECT languages FROM reference_lang WHERE id=" + resultSet.getInt("id_language") + ";");
-        //ResultSet resultSet = statement.executeQuery("SELECT * FROM developers where id >" + dev.size() + ";");
         ArrayList<ArrayList<String>> langdev = new ArrayList<>();
         while (resultSet.next()) {
             Developer developer = new Developer();
@@ -134,7 +149,7 @@ public class DUMP {
     }
 
     public static void manFromDB(ArrayList<Manager> man) throws SQLException {
-        Connection connection = DriverManager.getConnection(DB_URL, "root", "rnsnfhlkj");
+        Connection connection = DriverManager.getConnection(DB_URL, login, password);
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT managers.*, sales.id_manager, sales.title, sales.price FROM managers " +
                 "INNER JOIN sales ON managers.id = sales.id_manager;");
@@ -153,7 +168,7 @@ public class DUMP {
     }
 
     public static void union() throws SQLException {
-        Connection connection = DriverManager.getConnection(DB_URL, "root", "rnsnfhlkj");
+        Connection connection = DriverManager.getConnection(DB_URL, login, password);
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT id, fio, phone, email FROM developers UNION " +
                 "SELECT id, fio, phone, email FROM managers;");
@@ -172,7 +187,7 @@ public class DUMP {
     }
 
     public static void deleteTables() throws SQLException {
-        Connection connection = DriverManager.getConnection(DB_URL, "root", "rnsnfhlkj");
+        Connection connection = DriverManager.getConnection(DB_URL, login, password);
         Statement statement = connection.createStatement();
         statement.executeUpdate("DROP TABLE languages;");
         statement.executeUpdate("DROP TABLE reference_lang;");
