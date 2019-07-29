@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.*;
 
 public class DUMP {
+
     private static String DB_URL;
 
     private static String login;
@@ -73,13 +74,13 @@ public class DUMP {
                         "\", \"" + developer.getPhone() + "\",\"" + developer.getEmail() + "\");");
 
                 // запись в таблицы reference_lang и languages
-                for (String lang : developer.getStrings()) {
-                    ResultSet resultLang = statement.executeQuery("SELECT * FROM reference_lang WHERE languages LIKE \"" + lang + "\";");
+                for (Languages lang : developer.getLanguages()) {
+                    ResultSet resultLang = statement.executeQuery("SELECT * FROM reference_lang WHERE languages LIKE \"" + lang.getLanguage() + "\";");
                     if (!resultLang.next()) { // если не считались данные (то есть, такого языка нет в таблице)
                         statement.executeUpdate("INSERT INTO reference_lang(languages) " +
-                                "VALUE(\"" + lang + "\");");
+                                "VALUE(\"" + lang.getLanguage() + "\");");
                     }
-                    ResultSet resultLangId = statement.executeQuery("SELECT id FROM reference_lang WHERE languages LIKE \"" + lang + "\";");
+                    ResultSet resultLangId = statement.executeQuery("SELECT id FROM reference_lang WHERE languages LIKE \"" + lang.getLanguage() + "\";");
                     if (resultLangId.next()) {
                         statement.executeUpdate("INSERT INTO languages(id_developer, id_language) " +
                                 "VALUE(" + developer.getId() + "," + resultLangId.getInt("id") + ");");
@@ -117,55 +118,55 @@ public class DUMP {
     }
 
 
-    public static void devFromDB(ArrayList<Developer> dev) throws SQLException {
-        Connection connection = DriverManager.getConnection(DB_URL, login, password);
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT developers.*, languages.id_developer, languages.id_language FROM developers " +
-                "INNER JOIN languages ON developers.id = languages.id_developer;");
-        ArrayList<ArrayList<String>> langdev = new ArrayList<>();
-        while (resultSet.next()) {
-            Developer developer = new Developer();
-            developer.setId(resultSet.getInt("id"));
-            developer.setFio(resultSet.getString("fio"));
-            developer.setPhone(resultSet.getString("phone"));
-            developer.setEmail(resultSet.getString("email"));
-            ArrayList<String> lang = new ArrayList<>();
-            //ResultSet language = statement.executeQuery("SELECT languages FROM reference_lang WHERE id=" + resultSet.getInt("id_language") + ";");
-//            if (language.next()) {
-//                lang.add(language.getString("languages"));
-//            }
-            developer.setStrings(lang);
-            System.out.print(developer.getId() + "; ");
-            System.out.print(developer.getFio() + "; ");
-            System.out.print(developer.getPhone() + "; ");
-            System.out.print(developer.getEmail() + "; ");
-//            for (String f : lang) {
-//                System.out.print("Строки: " + f + ", ");
-//            }
-            System.out.println(developer.getStrings());
-            dev.add(developer);
-        }
-        connection.close();
-    }
+//    public static void devFromDB(ArrayList<Developer> dev) throws SQLException {
+//        Connection connection = DriverManager.getConnection(DB_URL, login, password);
+//        Statement statement = connection.createStatement();
+//        ResultSet resultSet = statement.executeQuery("SELECT developers.*, languages.id_developer, languages.id_language FROM developers " +
+//                "INNER JOIN languages ON developers.id = languages.id_developer;");
+//        ArrayList<ArrayList<String>> langdev = new ArrayList<>();
+//        while (resultSet.next()) {
+//            Developer developer = new Developer();
+//            developer.setId(resultSet.getInt("id"));
+//            developer.setFio(resultSet.getString("fio"));
+//            developer.setPhone(resultSet.getString("phone"));
+//            developer.setEmail(resultSet.getString("email"));
+//            ArrayList<String> lang = new ArrayList<>();
+//            //ResultSet language = statement.executeQuery("SELECT languages FROM reference_lang WHERE id=" + resultSet.getInt("id_language") + ";");
+////            if (language.next()) {
+////                lang.add(language.getString("languages"));
+////            }
+//            developer.setStrings(lang);
+//            System.out.print(developer.getId() + "; ");
+//            System.out.print(developer.getFio() + "; ");
+//            System.out.print(developer.getPhone() + "; ");
+//            System.out.print(developer.getEmail() + "; ");
+////            for (String f : lang) {
+////                System.out.print("Строки: " + f + ", ");
+////            }
+//            System.out.println(developer.getStrings());
+//            dev.add(developer);
+//        }
+//        connection.close();
+//    }
 
-    public static void manFromDB(ArrayList<Manager> man) throws SQLException {
-        Connection connection = DriverManager.getConnection(DB_URL, login, password);
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT managers.*, sales.id_manager, sales.title, sales.price FROM managers " +
-                "INNER JOIN sales ON managers.id = sales.id_manager;");
-        while (resultSet.next()) {
-            Manager manager = new Manager();
-            manager.setId(resultSet.getInt("id"));
-            manager.setFio(resultSet.getString("fio"));
-            manager.setPhone(resultSet.getString("phone"));
-            manager.setEmail(resultSet.getString("email"));
-            System.out.print(manager.getId() + "; ");
-            System.out.print(manager.getFio() + "; ");
-            System.out.print(manager.getPhone() + "; ");
-            System.out.print(manager.getEmail() + "; ");
-        }
-        connection.close();
-    }
+//    public static void manFromDB(ArrayList<Manager> man) throws SQLException {
+//        Connection connection = DriverManager.getConnection(DB_URL, login, password);
+//        Statement statement = connection.createStatement();
+//        ResultSet resultSet = statement.executeQuery("SELECT managers.*, sales.id_manager, sales.title, sales.price FROM managers " +
+//                "INNER JOIN sales ON managers.id = sales.id_manager;");
+//        while (resultSet.next()) {
+//            Manager manager = new Manager();
+//            manager.setId(resultSet.getInt("id"));
+//            manager.setFio(resultSet.getString("fio"));
+//            manager.setPhone(resultSet.getString("phone"));
+//            manager.setEmail(resultSet.getString("email"));
+//            System.out.print(manager.getId() + "; ");
+//            System.out.print(manager.getFio() + "; ");
+//            System.out.print(manager.getPhone() + "; ");
+//            System.out.print(manager.getEmail() + "; ");
+//        }
+//        connection.close();
+//    }
 
     public static void union() throws SQLException {
         Connection connection = DriverManager.getConnection(DB_URL, login, password);

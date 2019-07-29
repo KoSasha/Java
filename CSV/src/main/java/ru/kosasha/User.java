@@ -8,8 +8,11 @@ import java.io.IOException;
 public abstract class User implements CSV, JSON, Comparable <User> {
 
     private Integer id;
+
     private String fio;
+
     private String phone;
+
     private String email;
 
     public abstract String toCSV();

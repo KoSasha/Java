@@ -20,38 +20,25 @@ public class Main {
         // запись developers
         title("USER;ID;FIO             ;PHONE      ;EMAIL            ;LANGUAGES (language1,language2,...,languagen);\n", usersFile, false);
         readCSV("src/main/resources/developers.csv", "d");
+        System.out.println(devs.get(0).getLanguages().get(0).getLanguage());
         writeCSV(usersFile,  "d");
 
-//        DUMP.devFromDB(devs); (пока не але)
-
-        //запись в базу данных devs
+//        //запись в базу данных devs
         DUMP.devToDB(devs);
-
-        // из бады данных
-        //DUMP.devFromDB(devs);
-//        title("USER;ID; FIO               ; PHONE       ; EMAIL             ; STRINGS (string1, string2,..., stringn);\n", usersFile, false);
-////        readCSV("src/main/resources/developers.csv", "d");
-//        writeCSV(usersFile,  "d");
 //
-//        System.out.println(devs.get(0).getFio());
-//
-        // запись managers
+//        // запись managers
         title("USER;ID;FIO             ;PHONE      ;EMAIL            ;SALES (title1:price1,title2:price2,...)\n", usersFile, true);
         readCSV("src/main/resources/managers.csv", "m");
         writeCSV(usersFile,  "m");
 
-        //запись в базу данных mans
+//        //запись в базу данных mans
         DUMP.manToDB(mans);
 
         DUMP.union();
 //
-//        System.out.println(mans.get(1).getFio());
-//
-//        // запись tasks (пока только названия тасков)
+        // запись tasks (пока только названия тасков)
         title("OWNER;TASK ;QA\n", usersFile, true);
         taskList("src/main/resources/tasks.csv", usersFile);
-//
-//        System.out.println(tsks.get(0).getTask());
 //
         int i = 0;
         i = devs.get(0).compareTo(mans.get(0));

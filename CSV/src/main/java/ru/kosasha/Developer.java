@@ -1,32 +1,34 @@
 package ru.kosasha;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 
-@NoArgsConstructor@AllArgsConstructor
+@AllArgsConstructor
 public class Developer extends User {
 
-    //private String[] languages;
+    @Getter@Setter@JsonDeserialize(as = Languages[].class)
+    private List<Languages> languages;
 
-    private ArrayList<String> languages = new ArrayList<>();
+    public Developer() {
+        this.languages = new ArrayList<Languages>();
+    }
 
-    public void setStrings(ArrayList<String> string) {
-        for (String str : string) {
-            this.languages.add(str);
+    public void setLanguagesFromString(String[] strings) {
+        for (String s : strings) {
+            Languages language = new Languages();
+            language.setLanguage(s);
+            this.languages.add(language);
         }
     }
 
-    public ArrayList<String> getStrings() {
-        return languages;
-    }
-
-    public String getStringsS(ArrayList<String> strings) {
+    public String getStringsFromLanguages(List<Languages> languages) {
         String str = new String();
-        for (String string : strings) {
-            str += string;
+        for (Languages lang : languages) {
+            str += lang.getLanguage();
             str += ",";
         }
         return str;
@@ -34,23 +36,24 @@ public class Developer extends User {
 
     @Override
     public String toCSV() {
-        return this.getId().toString() + ";" + this.getFio() + ";" + this.getPhone().toString() +
-                ";" + this.getEmail() + ";" + this.getStringsS(getStrings());
+        return this.getId().toString() + ";" + this.getFio() + ";" + this.getPhone() +
+                ";" + this.getEmail() + ";" + this.getStringsFromLanguages(this.languages);
     }
 
     @Override
     public void fromCSV(String str) {
         String[] array = str.split(";");
-        setId(Integer.valueOf(array[0]));
-        setFio(array[1]);
-        setPhone(array[2]);
-        setEmail(array[3]);
+        this.setId(Integer.valueOf(array[0]));
+        this.setFio(array[1]);
+        this.setPhone(array[2]);
+        this.setEmail(array[3]);
         String[] strings = array[4].split(",");
-        ArrayList<String> lang = new ArrayList<>();
-        for (String s : strings) {
-            lang.add(s);
-        }
-        setStrings(lang);
+        this.setLanguagesFromString(strings);
+//        for (String s : strings) {
+//            Languages language = new Languages();
+//            language.setLanguage(s);
+//            this.languages.add(language);
+//        }
     }
 
     @Override
@@ -68,6 +71,6 @@ public class Developer extends User {
         this.setFio(dev.getFio());
         this.setEmail(dev.getEmail());
         this.setPhone(dev.getPhone());
-        this.setStrings(dev.getStrings());
+        this.setLanguages(dev.getLanguages());
     }
 }
