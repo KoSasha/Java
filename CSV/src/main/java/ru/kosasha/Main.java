@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+
     @JsonDeserialize(as = List.class)
     public static List<Developer> devs = new ArrayList<>();       // csv
 
