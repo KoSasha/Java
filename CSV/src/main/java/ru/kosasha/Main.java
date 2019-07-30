@@ -1,45 +1,57 @@
 package ru.kosasha;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static ArrayList<Developer> devs = new ArrayList<>();
+    @JsonDeserialize(as = List.class)
+    public static List<Developer> devs = new ArrayList<>();       // csv
 
-    public static ArrayList<Manager> mans = new ArrayList<>();
+    @JsonDeserialize(as = List.class)
+    public static List<Developer> developers = new ArrayList<>(); // json
 
-    public static ArrayList<Task> tsks = new ArrayList<>();
+    @JsonDeserialize(as = List.class)
+    public static List<Manager> mans = new ArrayList<>();         // csv
+
+    @JsonDeserialize(as = List.class)
+    public static List<Manager> managers = new ArrayList<>();     // json
+
+    public static List<Task> tsks = new ArrayList<>();
 
     public static String usersFile = "src/main/resources/users.csv";
 
     public static void main(String[] args) throws Exception {
         DUMP.property();
 
-        DUMP.deleteTables();
+        //DUMP.deleteTables();
         DUMP.createTables();
+
+        // CSV
+
         // запись developers
         title("USER;ID;FIO             ;PHONE      ;EMAIL            ;LANGUAGES (language1,language2,...,languagen);\n", usersFile, false);
         readCSV("src/main/resources/developers.csv", "d");
-        System.out.println(devs.get(0).getLanguages().get(0).getLanguage());
         writeCSV(usersFile,  "d");
 
-//        //запись в базу данных devs
+        //запись в базу данных devs
         DUMP.devToDB(devs);
 //
-//        // запись managers
+        // запись managers
         title("USER;ID;FIO             ;PHONE      ;EMAIL            ;SALES (title1:price1,title2:price2,...)\n", usersFile, true);
         readCSV("src/main/resources/managers.csv", "m");
         writeCSV(usersFile,  "m");
 
-//        //запись в базу данных mans
+        //запись в базу данных mans
         DUMP.manToDB(mans);
 
-        DUMP.union();
-//
         // запись tasks (пока только названия тасков)
         title("OWNER;TASK ;QA\n", usersFile, true);
         taskList("src/main/resources/tasks.csv", usersFile);
-//
+
         int i = 0;
         i = devs.get(0).compareTo(mans.get(0));
         System.out.println(i);
@@ -51,14 +63,50 @@ public class Main {
 
         // JSON
 
-//        readJson("src/main/resources/developers.json", "d");
-//        readJson("src/main/resources/managers.json", "m");
-//
-//        writeJson("src/main/resources/dev.json", "d", 0);
-//        writeJson("src/main/resources/man.json", "m", 0);
+        // чтение массива developers
+        arrDevFromJSON("src/main/resources/developers.json");
+
+        arrDevToJSON("src/main/resources/dev.json");
+
+        DUMP.devToDB(developers);
+
+        // чтение массива managers
+        arrManFromJSON("src/main/resources/managers.json");
+
+        arrManToJSON("src/main/resources/man.json");
+
+        DUMP.manToDB(managers);
+
+        DUMP.union();
     }
 
     // JSON
+
+    public static void arrDevFromJSON(String address_from) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        JavaType listType = mapper.getTypeFactory().constructCollectionType(List.class, Developer.class);
+        developers = mapper.readValue(new File(address_from), listType);
+    }
+
+    public static void arrManFromJSON(String address_from) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        JavaType listType = mapper.getTypeFactory().constructCollectionType(List.class, Manager.class);
+        managers = mapper.readValue(new File(address_from), listType);
+    }
+
+    public static void arrDevToJSON(String address_to) throws IOException {
+        FileWriter fw = new FileWriter(address_to, false);
+        ObjectMapper mapper = new ObjectMapper();
+        fw.write(mapper.writeValueAsString(developers));
+        fw.close();
+    }
+
+    public static void arrManToJSON(String address_to) throws IOException {
+        FileWriter fw = new FileWriter(address_to, false);
+        ObjectMapper mapper = new ObjectMapper();
+        fw.write(mapper.writeValueAsString(managers));
+        fw.close();
+    }
 
     public static void readJson(String address_from, String who) throws IOException {
         if (who == "d") {
@@ -76,7 +124,9 @@ public class Main {
 
     public static void writeJson(String address_to, String who, Integer index) throws Exception {
         if (who == "d") {
-            devs.get(index).toJSON(address_to);
+            for (int i = index; i < devs.size(); i++) {
+                devs.get(i).toJSON(address_to);
+            }
         } else if (who == "m") {
             mans.get(index).toJSON(address_to);
         } else {

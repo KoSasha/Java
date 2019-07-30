@@ -2,6 +2,7 @@ package ru.kosasha;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import lombok.*;
 
 import java.io.*;
@@ -10,7 +11,7 @@ import java.util.*;
 @AllArgsConstructor
 public class Developer extends User {
 
-    @Getter@Setter@JsonDeserialize(as = Languages[].class)
+    @Getter@Setter@JsonDeserialize(as = List.class)
     private List<Languages> languages;
 
     public Developer() {
@@ -49,11 +50,6 @@ public class Developer extends User {
         this.setEmail(array[3]);
         String[] strings = array[4].split(",");
         this.setLanguagesFromString(strings);
-//        for (String s : strings) {
-//            Languages language = new Languages();
-//            language.setLanguage(s);
-//            this.languages.add(language);
-//        }
     }
 
     @Override

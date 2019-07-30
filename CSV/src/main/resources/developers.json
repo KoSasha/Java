@@ -1,1 +1,4 @@
-{"id":1,"fio":"Surname1 Name1 O1","phone":"89131413478","email":"email1.@gmail.com","strings":["string11","string12"]}
+[{"id":3,"fio":"Parmesan","phone":"89131908967","email":"email3.@gmail.com","languages":[{"id":1,"language":"python"},
+  {"id":6,"language":"assembler"}]},
+  {"id":4,"fio":"Roquefort","phone":"89132347698","email":"email4.@gmail.com","languages":[{"id":7,"language":"fortran"},
+    {"id":4,"language":"java"}]}]

@@ -58,7 +58,7 @@ public class DUMP {
         connection.close();
     }
 
-    public static void devToDB(ArrayList<Developer> dev) throws SQLException {
+    public static void devToDB(List<Developer> dev) throws SQLException {
         Connection connection = DriverManager.getConnection(DB_URL, login, password);
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT id FROM developers");
@@ -92,7 +92,7 @@ public class DUMP {
         connection.close();
     }
 
-    public static void manToDB(ArrayList<Manager> mans) throws SQLException {
+    public static void manToDB(List<Manager> mans) throws SQLException {
         Connection connection = DriverManager.getConnection(DB_URL, login, password);
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT id FROM managers");

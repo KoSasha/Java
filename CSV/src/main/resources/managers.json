@@ -1,1 +1,4 @@
-{"id":1,"fio":"Surname1 Name1 O1","phone":"89131413478","email":"email1.@gmail.com","sales":[{"title":"title11","price":"price11"},{"title":"title12","price":"price12"}]}
+[{"id":3,"fio":"Ricotta","phone":"89234567382","email":"email3.@gmail.com","sales":[{"title":"title31","price":"price31"},
+  {"title":"title32","price":"price32"}]},
+  {"id":4,"fio":"Mascarpone","phone":"89520987645","email":"email4.@gmail.com","sales":[{"title":"title41","price":"price41"},
+    {"title":"title42","price":"price42"}]}]
