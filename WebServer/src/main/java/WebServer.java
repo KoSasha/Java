@@ -1,6 +1,11 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WebServer {
 
@@ -10,58 +15,70 @@ public class WebServer {
 
     private static String request;
 
-    // ввести в браузере: "http://localhost:4040/src/main/resources/index.html"
+    @JsonDeserialize(as = List.class)
+    private static List<User> usrs = new ArrayList<>();
+
+    // ввести в браузере: "http://localhost:4040/index.html"
     public static void main(String[] args) throws IOException {
         server = new ServerSocket(4040);
         System.out.println("Погнали");
         while (true) {
             client = server.accept();
+            new Thread(() -> {
+                try {
+                    InputStreamReader inStream = new InputStreamReader(client.getInputStream(), StandardCharsets.UTF_8);
+                    OutputStreamWriter outStream = new OutputStreamWriter(client.getOutputStream());
 
-            InputStreamReader inStream = new InputStreamReader(client.getInputStream(), StandardCharsets.UTF_8);
-            OutputStreamWriter outStream = new OutputStreamWriter(client.getOutputStream());
+                    BufferedReader in = new BufferedReader(inStream);
+                    BufferedWriter out = new BufferedWriter(outStream);
 
-            BufferedReader in = new BufferedReader(inStream);
-            BufferedWriter out = new BufferedWriter(outStream);
+                    String msg = "";
 
+                    int i = 0;
+                    System.out.println();
+                    while (in.ready()) {
+                        if (i == 0) {
+                            request = in.readLine();
+                            String[] array = request.split(" ");
+                            msg = array[1];
+                            System.out.println(msg);
 
-            String msg = new String();
-            while (!in.ready());
+                        }
+                        System.out.println(in.readLine());
+                        i++;
+                    }
 
-            int i = 0;
-            System.out.println();
-            while (in.ready()) {
-                if (i == 0) {
-                    request = in.readLine();
-                    msg = getMsg(request);
-                    System.out.println(request);
+                    String filetext = "";
 
-                }
-                System.out.println(in.readLine());
-                i++;
-            }
+                    if (msg.compareTo("/index.html") == 0) {
+                        InputStreamReader fr = new FileReader("src/main/resources" + msg);
+                        BufferedReader scanner = new BufferedReader(fr);
 
-            out.write("HTTP/1.1 200 OK\n");
-            out.write("Content-Type: text/html; charset=utf-8\n");
-            out.write("Content length: " + msg.length() + "\n");
-            out.write("\n");
-            out.write(msg + "\n");
-            out.flush();
+                        while (scanner.ready()) {
+                            filetext += scanner.readLine();
+                        }
+                        out.write("HTTP/1.1 200 OK\nContent-Type: text/html; charset=utf-8\nContent length: " + filetext.length() + "\n\n");
+                        scanner.close();
+                    } else if (msg.compareTo("/get_users") == 0) {
+                        User u1 = new User(1, "Pam", "900");
+                        User u2 = new User(2, "Tot", "800");
+                        usrs.add(u1);
+                        usrs.add(u2);
+                        ObjectMapper mapper = new ObjectMapper();
+                        filetext = mapper.writeValueAsString(usrs);
+                        out.write("HTTP/1.1 200 OK\nContent-Type: application/json\n\n");
+                    } else {
+                        filetext = "HTTP/1.1 404";
+                    }
 
-            in.close();
-            out.close();
-            client.close();
+                    out.write(filetext + "\n");
+                    out.flush();
+
+                    in.close();
+                    out.close();
+                    client.close();
+                } catch (Exception e) {}
+            }).start();
         }
-    }
-
-    public static String getMsg(String request) throws IOException{
-        String[] array = request.split(" ");
-        BufferedReader in = new BufferedReader(new FileReader(array[1].substring(1)));
-        StringBuilder msg = new StringBuilder();
-        String str;
-        while ((str = in.readLine()) != null) {
-            msg.append(str);
-        }
-        in.close();
-        return msg.toString();
     }
 }

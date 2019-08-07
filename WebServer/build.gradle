@@ -9,6 +9,16 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    compile 'com.fasterxml.jackson.core:jackson-core:2.6.3'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.3'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.12'
+
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+}
+
 run {
     standardInput = System.in
 }
