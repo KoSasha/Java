@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -48,30 +49,36 @@ public class WebServer {
                         i++;
                     }
 
-                    String filetext = "";
+                    String[] substrs = msg.split("/");
 
-                    if (msg.compareTo("/index.html") == 0) {
+                    if (substrs[1].compareTo("index.html") == 0) {
                         InputStreamReader fr = new FileReader("src/main/resources" + msg);
                         BufferedReader scanner = new BufferedReader(fr);
-
+                        String filetext = "";
                         while (scanner.ready()) {
                             filetext += scanner.readLine();
                         }
                         out.write("HTTP/1.1 200 OK\nContent-Type: text/html; charset=utf-8\nContent length: " + filetext.length() + "\n\n");
+                        out.write(filetext + "\n");
                         scanner.close();
-                    } else if (msg.compareTo("/get_users") == 0) {
-                        User u1 = new User(1, "Pam", "900");
-                        User u2 = new User(2, "Tot", "800");
-                        usrs.add(u1);
-                        usrs.add(u2);
+                    } else if (substrs[1].compareTo("get_users") == 0) {
+                        InputStreamReader fr = new FileReader("src/main/resources/users.json");
+                        BufferedReader scanner = new BufferedReader(fr);
+                        String users = "";
+                        while (scanner.ready()) {
+                            users += scanner.readLine();
+                        }
+                        out.write("HTTP/1.1 200 OK\nContent-Type: application/json\n\n" + users + "\n");
                         ObjectMapper mapper = new ObjectMapper();
-                        filetext = mapper.writeValueAsString(usrs);
-                        out.write("HTTP/1.1 200 OK\nContent-Type: application/json\n\n");
+                        JavaType listType = mapper.getTypeFactory().constructCollectionType(List.class, User.class);
+                        usrs = mapper.readValue(users, listType);
+                    } else if (substrs[1].compareTo("get_user") == 0 && substrs.length == 3) {
+                        ObjectMapper mapper = new ObjectMapper();
+                        String user = mapper.writeValueAsString(usrs.get(Integer.valueOf(substrs[2]) - 1));
+                        out.write("HTTP/1.1 200 OK\nContent-Type: application/json\n\n" + user + "\n");
                     } else {
-                        filetext = "HTTP/1.1 404";
+                        out.write("HTTP/1.1 404");
                     }
-
-                    out.write(filetext + "\n");
                     out.flush();
 
                     in.close();

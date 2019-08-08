@@ -1,11 +1,12 @@
+<!DOCTYPE html>
 <html>
     <head>
+        <meta contentType="text/html; charset=utf-8" />
         <script src="http://code.jquery.com/jquery-3.4.1.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <meta charset="UTF-8"/>
-        <title>Пользователи</title>
+        <title>Users</title>
 
         <script type="text/javascript">
             $(document).ready(function() {
@@ -13,20 +14,32 @@
                     console.log(data);
                     var i, str = "";
                     for (i = 0; i < data.length; i++) {
-                        console.log(data[i]);
                         str += data[i].id + ". " + data[i].fio + "<br>";
                     }
                     $(".users").html(str);
                 });
             });
+
+            function getUser(event) {
+                $.get("get_user" + "/" + document.getElementById('in').value, function(data) {
+                    console.log(data);
+                    var str = data.fio + " " + data.phone + "<br>";
+                    $(".search").html(str);
+                });
+            }
         </script>
 
     </head>
     <body>
         <div class="container">
-            <div>
+            <div class="row">
                 <div class="col-md-6">
                     <div class="users"></div>
+                </div>
+                <div class="col-md-6">
+                    <input id="in" type="text"><br>
+                    <button onclick="getUser()">Press me</button>
+                    <div class="search"></div>
                 </div>
             </div>
         </div>
