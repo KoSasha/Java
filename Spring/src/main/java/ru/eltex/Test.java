@@ -14,8 +14,8 @@ public class Test {
     @Bean
     public CommandLineRunner demo(UserRepository crudRepository) {
         return (args) -> {
-            crudRepository.save(new User("Pom", "900"));
-            crudRepository.save(new User("Tot", "800"));
+            crudRepository.save(new User("Gog", "900"));
+            crudRepository.save(new User("Tom", "800"));
             for (User u : crudRepository.findAll()) {
                 System.out.println(u.getFio());
             }

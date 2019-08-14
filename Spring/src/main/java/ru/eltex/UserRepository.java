@@ -6,4 +6,5 @@ import java.util.*;
 
 public interface UserRepository extends CrudRepository<User, String> {
     List<User> findByFio(String fio);
+    User findById(Integer id);
 }
